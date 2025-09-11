@@ -11,5 +11,9 @@ class PlacesRepository {
     Place("Gletschhorn", 46.61803, 8.44086, 3305),
     Place("Winterstock", 46.61778, 8.45467, 3203),
     Place("Tiefenstock", 46.64000, 8.42000, 3515),
+    Place("Dammastock", 46.64341, 8.42106, 3630),
+    Place("Gross Muttenhorn", 46.54610, 8.42750, 3099),
+    Place("Stotzig Muttenhorn", 46.53755, 8.44374, 3061),
+    Place("Chli Muttenhorn", 46.54170, 8.43417, 3024),
   ];
 }

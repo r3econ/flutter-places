@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
             return ListTile(
               title: item.buildTitle(context),
               subtitle: item.buildSubtitle(context),
+              trailing: Icon(Icons.chevron_right_rounded),
               onTap: () {
                 // Go to the next screen with Navigator.push
               },

@@ -1,6 +1,7 @@
-import '/repositories/places_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 import '/models/place.dart';
+import 'dart:async';
 
 class PlaceDetailsPage extends StatefulWidget {
   const PlaceDetailsPage({super.key, required this.place});
@@ -12,7 +13,8 @@ class PlaceDetailsPage extends StatefulWidget {
 }
 
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
-  PlacesRepository repository = PlacesRepository();
+  final Completer<MapLibreMapController> mapController = Completer();
+  bool canInteractWithMap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,26 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
         title: Text(widget.place.name,
         style: TextStyle(
           fontWeight: FontWeight.bold))),
-      body: Center(
-
+            floatingActionButtonLocation: FloatingActionButtonLocation
+          .miniCenterFloat,
+      floatingActionButton: canInteractWithMap
+          ? FloatingActionButton(
+        onPressed: _moveCameraToPlaceLocation,
+        mini: true,
+        child: const Icon(Icons.restore),
       )
+          : null,
+      body: MapLibreMap(
+        onMapCreated: (controller) => _moveCameraToPlaceLocation(),
+        initialCameraPosition: CameraPosition(target: LatLng(widget.place.latitude, 
+          widget.place.longitude), zoom: 4.0),
+        onStyleLoadedCallback: () => setState(() => canInteractWithMap = true),
+      ),
     );
   }
+
+  void _moveCameraToPlaceLocation() =>
+      mapController.future.then((c) =>
+          c.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(widget.place.latitude, 
+          widget.place.longitude)))));
 }

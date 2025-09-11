@@ -1,6 +1,7 @@
 import '/repositories/places_repository.dart';
 import 'package:flutter/material.dart';
 import '/models/place.dart';
+import '/views/place_list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -26,9 +27,11 @@ class _HomePageState extends State<HomePage> {
         child: ListView.separated(
           itemCount: repository.places.length,
           itemBuilder: (context, index) {
+            Place place = repository.places[index];
+            PlaceListItem item = PlaceListItem(place.name, '${place.altitude} m');
             return ListTile(
-              title: Text(repository.places[index].name),
-              subtitle: Text('${repository.places[index].altitude} m'),
+              title: item.buildTitle(context),
+              subtitle: item.buildSubtitle(context),
               onTap: () {
                 // Go to the next screen with Navigator.push
               },
@@ -41,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addPlace,
-        tooltip: 'Increment',
+        tooltip: 'Add Place',
         child: const Icon(Icons.add),
       ),
     );
@@ -54,28 +57,4 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
-}
-
-abstract class ListItem {
-  /// The title line to show in a list item.
-  Widget buildTitle(BuildContext context);
-
-  /// The subtitle line, if any, to show in a list item.
-  Widget buildSubtitle(BuildContext context);
-}
-
-/// A ListItem that contains data to display a heading.
-class PlaceItem implements ListItem {
-  final String title;
-  final String subtitle;
-
-  PlaceItem(this.title, this.subtitle);
-
-  @override
-  Widget buildTitle(BuildContext context) {
-    return Text(title, style: Theme.of(context).textTheme.headlineSmall);
-  }
-
-  @override
-  Widget buildSubtitle(BuildContext context) => Text(subtitle);
 }

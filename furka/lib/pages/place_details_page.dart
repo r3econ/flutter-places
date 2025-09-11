@@ -21,29 +21,39 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.place.name,
-        style: TextStyle(
-          fontWeight: FontWeight.bold))),
-            floatingActionButtonLocation: FloatingActionButtonLocation
-          .miniCenterFloat,
+        title: Text(
+          widget.place.name,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: canInteractWithMap
           ? FloatingActionButton(
-        onPressed: _moveCameraToPlaceLocation,
-        mini: true,
-        child: const Icon(Icons.restore),
-      )
+              onPressed: _moveCameraToPlaceLocation,
+              mini: true,
+              child: const Icon(Icons.restore),
+            )
           : null,
       body: MapLibreMap(
+        styleString: "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json",
         onMapCreated: (controller) => _moveCameraToPlaceLocation(),
-        initialCameraPosition: CameraPosition(target: LatLng(widget.place.latitude, 
-          widget.place.longitude), zoom: 4.0),
+        initialCameraPosition: CameraPosition(
+          target: LatLng(widget.place.latitude, widget.place.longitude),
+          zoom: 14.0,
+        ),
         onStyleLoadedCallback: () => setState(() => canInteractWithMap = true),
       ),
     );
   }
 
-  void _moveCameraToPlaceLocation() =>
-      mapController.future.then((c) =>
-          c.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(widget.place.latitude, 
-          widget.place.longitude)))));
+  void _moveCameraToPlaceLocation() => mapController.future.then(
+    (c) => c.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(widget.place.latitude, widget.place.longitude),
+        ),
+      ),
+    ),
+  );
 }

@@ -1,3 +1,4 @@
+import 'package:Furka/pages/place_details_page.dart';
 import '/repositories/places_repository.dart';
 import 'package:flutter/material.dart';
 import '/models/place.dart';
@@ -5,7 +6,6 @@ import '/views/place_list_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -20,22 +20,25 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold))),
+        title: Text(
+          widget.title,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Center(
         child: ListView.separated(
           itemCount: repository.places.length,
           itemBuilder: (context, index) {
             Place place = repository.places[index];
-            PlaceListItem item = PlaceListItem(place.name, '${place.altitude} m');
+            PlaceListItem item = PlaceListItem(
+              place.name,
+              '${place.altitude} m',
+            );
             return ListTile(
               title: item.buildTitle(context),
               subtitle: item.buildSubtitle(context),
               trailing: Icon(Icons.chevron_right_rounded),
-              onTap: () {
-                // Go to the next screen with Navigator.push
-              },
+              onTap: () => _navigateToPlaceDetails(context, place),
             );
           },
           separatorBuilder: (context, index) {
@@ -51,11 +54,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _navigateToPlaceDetails(BuildContext context, Place place) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => PlaceDetailsPage(place: place)),
+    );
+  }
+
   void _addPlace() {
     setState(() {
-      repository.places.add(
-        Place("Realp", 46.583333, 8.166667, 1538),
-      );
+      repository.places.add(Place("Realp", 46.583333, 8.166667, 1538));
     });
   }
 }

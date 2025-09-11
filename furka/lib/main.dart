@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/repositories/places_repository.dart';
+import 'configuration/app_configuration.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,14 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 255, 238, 0),
-          primary: const Color.fromARGB(255, 255, 238, 0),
-        ),
-      ),
-      home: const HomePage(title: 'Furka'),
+      title: AppConfiguration.appName,
+      theme: AppConfiguration.theme,
+      home: const HomePage(title: AppConfiguration.appName),
     );
   }
 }

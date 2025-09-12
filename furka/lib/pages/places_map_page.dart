@@ -18,20 +18,12 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       Completer<MapLibreMapController>();
   bool _canInteractWithMap = false;
 
-  CameraPosition get _initialCameraPosition => const CameraPosition(
-        target: LatLng(46.57250, 8.41500), // Furka Pass coordinates
-        zoom: 12.0,
-      );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text(
-          'Map',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('Map', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: _canInteractWithMap
@@ -44,7 +36,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       body: MapLibreMap(
         styleString: AppConfiguration.mapStyle,
         onMapCreated: _onMapCreated,
-        initialCameraPosition: _initialCameraPosition,
+        initialCameraPosition: _initialCameraPosition(),
         onStyleLoadedCallback: _onStyleLoaded,
       ),
     );
@@ -58,30 +50,34 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
 
   Future<void> _onStyleLoaded() async {
     setState(() => _canInteractWithMap = true);
-    final controller = await _mapController.future;
-    await controller.animateCamera(
-      CameraUpdate.newCameraPosition(_initialCameraPosition),
-    );
-    await _addAnnotations(controller);
+    await _addAnnotations();
+    await _moveCameraToPlacesBounds();
   }
 
   Future<void> _moveCameraToPlacesBounds() async {
     final controller = await _mapController.future;
     final bounds = _getBoundsForPlaces();
     await controller.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, left: 50, top: 50, right: 50, bottom: 50),
+      CameraUpdate.newLatLngBounds(
+        bounds,
+        left: 50,
+        top: 50,
+        right: 50,
+        bottom: 50,
+      ),
     );
   }
 
-  Future<void> _addAnnotations(MapLibreMapController controller) async {
+  Future<void> _addAnnotations() async {
+    final controller = await _mapController.future;
     for (Place place in _repository.places) {
       await controller.addCircle(
         CircleOptions(
           geometry: LatLng(place.latitude, place.longitude),
-          circleColor:
-              AppConfiguration.theme.colorScheme.surfaceTint.toHexStringRGB(),
-          circleStrokeColor:
-              AppConfiguration.theme.colorScheme.primary.toHexStringRGB(),
+          circleColor: AppConfiguration.theme.colorScheme.surfaceTint
+              .toHexStringRGB(),
+          circleStrokeColor: AppConfiguration.theme.colorScheme.primary
+              .toHexStringRGB(),
           circleStrokeWidth: 2.0,
           circleRadius: 5.0,
           circleOpacity: 0.9,
@@ -90,14 +86,13 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
     }
   }
 
-    LatLngBounds _getBoundsForPlaces() {
+  CameraPosition _initialCameraPosition() => CameraPosition(
+    target: _getBoundsCenter(_getBoundsForPlaces()),
+    zoom: 12.0,
+  );
+
+  LatLngBounds _getBoundsForPlaces() {
     final places = _repository.places;
-    if (places.isEmpty) {
-      return LatLngBounds(
-        southwest: _initialCameraPosition.target,
-        northeast: _initialCameraPosition.target,
-      );
-    }
 
     double minLat = places.first.latitude;
     double maxLat = places.first.latitude;
@@ -115,5 +110,13 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       southwest: LatLng(minLat, minLng),
       northeast: LatLng(maxLat, maxLng),
     );
+  }
+
+  LatLng _getBoundsCenter(LatLngBounds bounds) {
+    final double centerLat =
+        (bounds.southwest.latitude + bounds.northeast.latitude) / 2;
+    final double centerLng =
+        (bounds.southwest.longitude + bounds.northeast.longitude) / 2;
+    return LatLng(centerLat, centerLng);
   }
 }

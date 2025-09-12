@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import '/models/place.dart';
 import 'dart:async';
+import '/configuration/app_configuration.dart';
 
 class PlaceDetailsPage extends StatefulWidget {
   const PlaceDetailsPage({super.key, required this.place});
-
   final Place place;
 
   @override
@@ -13,8 +13,14 @@ class PlaceDetailsPage extends StatefulWidget {
 }
 
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
-  final Completer<MapLibreMapController> mapController = Completer();
-  bool canInteractWithMap = false;
+  final Completer<MapLibreMapController> _mapController = Completer();
+  bool _canInteractWithMap = false;
+  final String _mapStyle =
+      "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json";
+  CameraPosition get _initialCameraPosition => CameraPosition(
+    target: LatLng(widget.place.latitude, widget.place.longitude),
+    zoom: 14.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: canInteractWithMap
+      floatingActionButton: _canInteractWithMap
           ? FloatingActionButton(
               onPressed: _moveCameraToPlaceLocation,
               mini: true,
@@ -36,65 +42,48 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
             )
           : null,
       body: MapLibreMap(
-        styleString:
-            "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json",
+        styleString: _mapStyle,
         onMapCreated: _onMapCreated,
         rotateGesturesEnabled: false,
         tiltGesturesEnabled: true,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(widget.place.latitude, widget.place.longitude),
-          zoom: 14.0,
-        ),
-        // call _onStyleLoaded when the style finished loading
+        initialCameraPosition: _initialCameraPosition,
         onStyleLoadedCallback: _onStyleLoaded,
       ),
     );
   }
 
   void _onMapCreated(MapLibreMapController controller) {
-    if (!mapController.isCompleted) {
-      mapController.complete(controller);
+    if (!_mapController.isCompleted) {
+      _mapController.complete(controller);
     }
   }
 
   Future<void> _onStyleLoaded() async {
-    setState(() => canInteractWithMap = true);
-    final controller = await mapController.future;
-
-    // move camera (optional)
+    setState(() => _canInteractWithMap = true);
+    final controller = await _mapController.future;
     await controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(widget.place.latitude, widget.place.longitude),
-          zoom: 14.0,
-        ),
-      ),
+      CameraUpdate.newCameraPosition(_initialCameraPosition),
     );
-
-    // add the circle
-    await _addCircle(controller);
+    await _addPlaceAnnotation(controller);
   }
 
   Future<void> _moveCameraToPlaceLocation() async {
-    final c = await mapController.future;
+    final c = await _mapController.future;
     await c.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(widget.place.latitude, widget.place.longitude),
-          zoom: 14.0,
-        ),
-      ),
+      CameraUpdate.newCameraPosition(_initialCameraPosition),
     );
   }
 
-  Future<void> _addCircle(MapLibreMapController controller) async {
+  Future<void> _addPlaceAnnotation(MapLibreMapController controller) async {
     await controller.addCircle(
       CircleOptions(
-        geometry: LatLng(widget.place.latitude, widget.place.longitude),
-        circleRadius: 6.0,
-        circleColor: '#5AC8FA', // string hex is accepted
+        geometry: _initialCameraPosition.target,
+        circleColor: AppConfiguration.theme.colorScheme.surfaceTint
+            .toHexStringRGB(),
+        circleStrokeColor: AppConfiguration.theme.colorScheme.primary
+            .toHexStringRGB(),
         circleStrokeWidth: 2.0,
-        circleStrokeColor: '#ffffff',
+        circleRadius: 6.0,
         circleOpacity: 0.9,
       ),
     );

@@ -15,7 +15,6 @@ class PlaceDetailsPage extends StatefulWidget {
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
-  bool _canInteractWithMap = false;
   CameraPosition get _initialCameraPosition => CameraPosition(
         target: LatLng(widget.place.latitude, widget.place.longitude),
         zoom: 14.0,
@@ -33,14 +32,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: _canInteractWithMap
-          ? FloatingActionButton(
-              onPressed: _moveCameraToPlaceLocation,
-              mini: true,
-              child: const Icon(Icons.restore),
-            )
-          : null,
       body: Column(
         children: <Widget>[
           // Map (50% of screen height)
@@ -95,19 +86,11 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   }
 
   Future<void> _onStyleLoaded() async {
-    setState(() => _canInteractWithMap = true);
     final controller = await _mapController.future;
     await controller.animateCamera(
       CameraUpdate.newCameraPosition(_initialCameraPosition),
     );
     await _addPlaceAnnotation(controller);
-  }
-
-  Future<void> _moveCameraToPlaceLocation() async {
-    final c = await _mapController.future;
-    await c.animateCamera(
-      CameraUpdate.newCameraPosition(_initialCameraPosition),
-    );
   }
 
   Future<void> _addPlaceAnnotation(MapLibreMapController controller) async {

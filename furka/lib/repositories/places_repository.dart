@@ -8,12 +8,11 @@ class PlacesRepository {
     Place("Sidelenhorn", 46.60085, 8.40974, 3215),
     Place("Chli Bielenhorn", 46.59891, 8.43489, 2940),
     Place("Gross Bielenhorn", 46.60360, 8.42859, 3210),
-    Place("Gletschhorn", 46.61803, 8.44086, 3305),
-    Place("Winterstock", 46.61778, 8.45467, 3203),
-    Place("Tiefenstock", 46.64000, 8.42000, 3515),
-    Place("Dammastock", 46.64341, 8.42106, 3630),
-    Place("Gross Muttenhorn", 46.54610, 8.42750, 3099),
-    Place("Stotzig Muttenhorn", 46.53755, 8.44374, 3061),
-    Place("Chli Muttenhorn", 46.54170, 8.43417, 3024),
+    Place("Gletschhorn", 46.62064180356679, 8.438783795824952, 3305),
+    Place("Winterstock", 46.62151353419413, 8.454442199594155, 3203),
+    Place("Tiefenstock", 46.62760658827102, 8.422329465413997, 3516),
+    Place("Dammastock", 46.64390259472042, 8.421042368568028, 3630),
+    Place("Schafberg", 46.60653683355199, 8.469294915797928, 2590),
+    Place("Lochberg", 46.62442621896429, 8.469794197581523, 3078),
   ];
 }

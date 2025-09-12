@@ -16,9 +16,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
   bool _canInteractWithMap = false;
-  // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
-  final String _mapStyle =
-      "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json";
   CameraPosition get _initialCameraPosition => CameraPosition(
         target: LatLng(widget.place.latitude, widget.place.longitude),
         zoom: 14.0,
@@ -50,10 +47,10 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
           SizedBox(
             height: screenHeight * 0.5,
             child: MapLibreMap(
-              styleString: _mapStyle,
+              styleString: AppConfiguration.mapStyle,
               onMapCreated: _onMapCreated,
               rotateGesturesEnabled: false,
-              tiltGesturesEnabled: true,
+              tiltGesturesEnabled: false,
               initialCameraPosition: _initialCameraPosition,
               onStyleLoadedCallback: _onStyleLoaded,
             ),

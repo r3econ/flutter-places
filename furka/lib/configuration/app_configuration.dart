@@ -9,4 +9,7 @@ class AppConfiguration {
       surfaceTint: const Color(0xFF5AC8FA),
     ),
   );
+    // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
+  static final String mapStyle =
+      "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json";
 }

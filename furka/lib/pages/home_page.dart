@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
             Place place = repository.places[index];
             PlaceListItem item = PlaceListItem(
               place.name,
-              '${place.altitude} m',
+              place.altitudeDescription(),
             );
             return ListTile(
               title: item.buildTitle(context),

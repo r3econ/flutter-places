@@ -38,6 +38,8 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       body: MapLibreMap(
         styleString: "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json",
         onMapCreated: (controller) => _moveCameraToPlaceLocation(),
+        rotateGesturesEnabled: false,
+        tiltGesturesEnabled: true,
         initialCameraPosition: CameraPosition(
           target: LatLng(widget.place.latitude, widget.place.longitude),
           zoom: 14.0,
@@ -52,6 +54,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       CameraUpdate.newCameraPosition(
         CameraPosition(
           target: LatLng(widget.place.latitude, widget.place.longitude),
+          zoom: 14.0,
         ),
       ),
     ),

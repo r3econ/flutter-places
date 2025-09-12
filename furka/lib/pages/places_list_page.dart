@@ -4,15 +4,15 @@ import '/models/place.dart';
 import '/views/place_list_item.dart';
 import 'place_details_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+class PlacesListPage extends StatefulWidget {
+  const PlacesListPage({super.key, required this.title});
   final String title;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PlacesListPage> createState() => _PlacesListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PlacesListPageState extends State<PlacesListPage> {
   PlacesRepository repository = PlacesRepository();
 
   @override

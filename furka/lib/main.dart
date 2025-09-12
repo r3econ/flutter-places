@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'configuration/app_configuration.dart';
-import 'pages/home_page.dart';
+import 'pages/places_list_page.dart';
 
 void main() => runApp(const App());
 
@@ -51,8 +51,8 @@ class _MainTabBarState extends State<MainTabBar> {
       ),
       body: <Widget>[
         /// Home page
-        HomePage(title: AppConfiguration.appName),
-        HomePage(title: AppConfiguration.appName),
+        PlacesListPage(title: AppConfiguration.appName),
+        PlacesListPage(title: AppConfiguration.appName),
       ][currentPageIndex],
     );
   }

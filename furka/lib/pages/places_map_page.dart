@@ -4,6 +4,7 @@ import '/models/place.dart';
 import 'dart:async';
 import '/configuration/app_configuration.dart';
 import '/repositories/places_repository.dart';
+import 'place_details_page.dart'; // Make sure you have this page
 
 class PlacesMapPage extends StatefulWidget {
   const PlacesMapPage({super.key});
@@ -17,6 +18,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
   bool _canInteractWithMap = false;
+  final Map<String, Place> _circleIdToPlace = {};
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   Future<void> _addAnnotations() async {
     final controller = await _mapController.future;
     for (Place place in _repository.places) {
-      await controller.addCircle(
+      final circle = await controller.addCircle(
         CircleOptions(
           geometry: LatLng(place.latitude, place.longitude),
           circleColor: AppConfiguration.theme.colorScheme.surfaceTint
@@ -83,7 +85,18 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
           circleOpacity: 0.9,
         ),
       );
+      _circleIdToPlace[circle.id] = place;
     }
+    controller.onCircleTapped.add(_onCircleTapped);
+  }
+
+  void _onCircleTapped(Circle circle) async {
+    final place = _circleIdToPlace[circle.id];
+    if (place == null) return;
+
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => PlaceDetailsPage(place: place)));
   }
 
   CameraPosition _initialCameraPosition() => CameraPosition(

@@ -15,8 +15,9 @@ class PlaceDetailsPage extends StatefulWidget {
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   final Completer<MapLibreMapController> _mapController = Completer();
   bool _canInteractWithMap = false;
+  // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
   final String _mapStyle =
-      "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json";
+      "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json";
   CameraPosition get _initialCameraPosition => CameraPosition(
     target: LatLng(widget.place.latitude, widget.place.longitude),
     zoom: 14.0,

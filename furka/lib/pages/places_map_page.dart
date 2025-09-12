@@ -13,28 +13,32 @@ class PlacesMapPage extends StatefulWidget {
 }
 
 class _PlacesMapPageState extends State<PlacesMapPage> {
-  PlacesRepository _repository = PlacesRepository();
+  final PlacesRepository _repository = PlacesRepository();
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
   bool _canInteractWithMap = false;
-  CameraPosition get _initialCameraPosition => CameraPosition(
-    target: LatLng(46.57250, 8.41500), // Furka Pass coordinates
-    zoom: 12.0,
-  );
+
+  CameraPosition get _initialCameraPosition => const CameraPosition(
+        target: LatLng(46.57250, 8.41500), // Furka Pass coordinates
+        zoom: 12.0,
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text('Map', style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Map',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: _canInteractWithMap
           ? FloatingActionButton(
-              onPressed: _moveCameraToPlaceLocation,
+              onPressed: _moveCameraToPlacesBounds,
               mini: true,
-              child: const Icon(Icons.restore),
+              child: const Icon(Icons.zoom_out_map),
             )
           : null,
       body: MapLibreMap(
@@ -61,10 +65,11 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
     await _addAnnotations(controller);
   }
 
-  Future<void> _moveCameraToPlaceLocation() async {
-    final c = await _mapController.future;
-    await c.animateCamera(
-      CameraUpdate.newCameraPosition(_initialCameraPosition),
+  Future<void> _moveCameraToPlacesBounds() async {
+    final controller = await _mapController.future;
+    final bounds = _getBoundsForPlaces();
+    await controller.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, left: 50, top: 50, right: 50, bottom: 50),
     );
   }
 
@@ -73,15 +78,42 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       await controller.addCircle(
         CircleOptions(
           geometry: LatLng(place.latitude, place.longitude),
-          circleColor: AppConfiguration.theme.colorScheme.surfaceTint
-              .toHexStringRGB(),
-          circleStrokeColor: AppConfiguration.theme.colorScheme.primary
-              .toHexStringRGB(),
+          circleColor:
+              AppConfiguration.theme.colorScheme.surfaceTint.toHexStringRGB(),
+          circleStrokeColor:
+              AppConfiguration.theme.colorScheme.primary.toHexStringRGB(),
           circleStrokeWidth: 2.0,
           circleRadius: 5.0,
           circleOpacity: 0.9,
         ),
       );
     }
+  }
+
+    LatLngBounds _getBoundsForPlaces() {
+    final places = _repository.places;
+    if (places.isEmpty) {
+      return LatLngBounds(
+        southwest: _initialCameraPosition.target,
+        northeast: _initialCameraPosition.target,
+      );
+    }
+
+    double minLat = places.first.latitude;
+    double maxLat = places.first.latitude;
+    double minLng = places.first.longitude;
+    double maxLng = places.first.longitude;
+
+    for (final place in places) {
+      if (place.latitude < minLat) minLat = place.latitude;
+      if (place.latitude > maxLat) maxLat = place.latitude;
+      if (place.longitude < minLng) minLng = place.longitude;
+      if (place.longitude > maxLng) maxLng = place.longitude;
+    }
+
+    return LatLngBounds(
+      southwest: LatLng(minLat, minLng),
+      northeast: LatLng(maxLat, maxLng),
+    );
   }
 }

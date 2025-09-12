@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furka/pages/places_map_page.dart';
 import 'configuration/app_configuration.dart';
 import 'pages/places_list_page.dart';
 
@@ -52,7 +53,7 @@ class _MainTabBarState extends State<MainTabBar> {
       body: <Widget>[
         /// Home page
         PlacesListPage(title: AppConfiguration.appName),
-        PlacesListPage(title: AppConfiguration.appName),
+        PlacesMapPage(),
       ][currentPageIndex],
     );
   }

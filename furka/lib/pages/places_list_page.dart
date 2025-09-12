@@ -46,11 +46,6 @@ class _PlacesListPageState extends State<PlacesListPage> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addPlace,
-        tooltip: 'Add Place',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -58,11 +53,5 @@ class _PlacesListPageState extends State<PlacesListPage> {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => PlaceDetailsPage(place: place)),
     );
-  }
-
-  void _addPlace() {
-    setState(() {
-      repository.places.add(Place("Realp", 46.583333, 8.166667, 1538));
-    });
   }
 }

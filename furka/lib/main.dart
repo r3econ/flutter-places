@@ -2,20 +2,58 @@ import 'package:flutter/material.dart';
 import 'configuration/app_configuration.dart';
 import 'pages/home_page.dart';
 
-void main() {
-  runApp(const App());
-}
+void main() => runApp(const App());
 
 class App extends StatelessWidget {
   const App({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppConfiguration.appName,
       theme: AppConfiguration.theme,
-      home: const HomePage(title: AppConfiguration.appName),
+      home: MainTabBar());
+  }
+}
+
+class MainTabBar extends StatefulWidget {
+  const MainTabBar({super.key});
+
+  @override
+  State<MainTabBar> createState() => _MainTabBarState();
+}
+
+class _MainTabBarState extends State<MainTabBar> {
+  int currentPageIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Scaffold(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        indicatorColor: theme.colorScheme.onSecondary,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.list_outlined),
+            label: 'Places',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.map_outlined),
+            label: 'Map',
+          ),
+        ],
+      ),
+      body: <Widget>[
+        /// Home page
+        HomePage(title: AppConfiguration.appName),
+        HomePage(title: AppConfiguration.appName),
+      ][currentPageIndex],
     );
   }
 }

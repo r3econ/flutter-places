@@ -16,14 +16,13 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
   CameraPosition get _initialCameraPosition => CameraPosition(
-        target: LatLng(widget.place.latitude, widget.place.longitude),
-        zoom: 14.0,
-      );
+    target: LatLng(widget.place.latitude, widget.place.longitude),
+    zoom: 14.0,
+  );
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -34,34 +33,39 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       ),
       body: Column(
         children: <Widget>[
-          // Map (50% of screen height)
-          SizedBox(
-            height: screenHeight * 0.5,
-            child: MapLibreMap(
-              styleString: AppConfiguration.mapStyle,
-              onMapCreated: _onMapCreated,
-              rotateGesturesEnabled: false,
-              tiltGesturesEnabled: false,
-              initialCameraPosition: _initialCameraPosition,
-              onStyleLoadedCallback: _onStyleLoaded,
-            ),
-          ),
-
           // Place details (below map)
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: SizedBox(
-                  width: double.infinity, // forces full width so textAlign works
+                  width:
+                      double.infinity, // forces full width so textAlign works
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, // left align
                     children: <Widget>[
+                      // Map (50% of screen height)
+                      SizedBox(
+                        height: screenHeight * 0.5,
+                        child: MapLibreMap(
+                          styleString: AppConfiguration.mapStyle,
+                          onMapCreated: _onMapCreated,
+                          dragEnabled: false,
+                          zoomGesturesEnabled: false,
+                          rotateGesturesEnabled: false,
+                          tiltGesturesEnabled: false,
+                          initialCameraPosition: _initialCameraPosition,
+                          onStyleLoadedCallback: _onStyleLoaded,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
                       Text(
                         "Altitude: ${widget.place.altitudeDescription()}",
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.start,
                       ),
+
                       const SizedBox(height: 12),
                       Text(
                         widget.place.description,
@@ -89,22 +93,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
     final controller = await _mapController.future;
     await controller.animateCamera(
       CameraUpdate.newCameraPosition(_initialCameraPosition),
-    );
-    await _addPlaceAnnotation(controller);
-  }
-
-  Future<void> _addPlaceAnnotation(MapLibreMapController controller) async {
-    await controller.addCircle(
-      CircleOptions(
-        geometry: _initialCameraPosition.target,
-        circleColor:
-            AppConfiguration.theme.colorScheme.surfaceTint.toHexStringRGB(),
-        circleStrokeColor:
-            AppConfiguration.theme.colorScheme.primary.toHexStringRGB(),
-        circleStrokeWidth: 2.0,
-        circleRadius: 6.0,
-        circleOpacity: 0.9,
-      ),
     );
   }
 }

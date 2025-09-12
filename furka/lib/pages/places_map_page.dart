@@ -30,6 +30,7 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: _canInteractWithMap
           ? FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               onPressed: _moveCameraToPlacesBounds,
               mini: true,
               child: const Icon(Icons.zoom_out_map),

@@ -13,18 +13,21 @@ class PlaceDetailsPage extends StatefulWidget {
 }
 
 class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
-  final Completer<MapLibreMapController> _mapController = Completer();
+  final Completer<MapLibreMapController> _mapController =
+      Completer<MapLibreMapController>();
   bool _canInteractWithMap = false;
   // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
   final String _mapStyle =
       "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json";
   CameraPosition get _initialCameraPosition => CameraPosition(
-    target: LatLng(widget.place.latitude, widget.place.longitude),
-    zoom: 14.0,
-  );
+        target: LatLng(widget.place.latitude, widget.place.longitude),
+        zoom: 14.0,
+      );
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -33,8 +36,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: _canInteractWithMap
           ? FloatingActionButton(
               onPressed: _moveCameraToPlaceLocation,
@@ -42,13 +44,49 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
               child: const Icon(Icons.restore),
             )
           : null,
-      body: MapLibreMap(
-        styleString: _mapStyle,
-        onMapCreated: _onMapCreated,
-        rotateGesturesEnabled: false,
-        tiltGesturesEnabled: true,
-        initialCameraPosition: _initialCameraPosition,
-        onStyleLoadedCallback: _onStyleLoaded,
+      body: Column(
+        children: <Widget>[
+          // Map (50% of screen height)
+          SizedBox(
+            height: screenHeight * 0.5,
+            child: MapLibreMap(
+              styleString: _mapStyle,
+              onMapCreated: _onMapCreated,
+              rotateGesturesEnabled: false,
+              tiltGesturesEnabled: true,
+              initialCameraPosition: _initialCameraPosition,
+              onStyleLoadedCallback: _onStyleLoaded,
+            ),
+          ),
+
+          // Place details (below map)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity, // forces full width so textAlign works
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // left align
+                    children: <Widget>[
+                      Text(
+                        "Altitude: ${widget.place.altitudeDescription()}",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.start,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.place.description,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -79,10 +117,10 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
     await controller.addCircle(
       CircleOptions(
         geometry: _initialCameraPosition.target,
-        circleColor: AppConfiguration.theme.colorScheme.surfaceTint
-            .toHexStringRGB(),
-        circleStrokeColor: AppConfiguration.theme.colorScheme.primary
-            .toHexStringRGB(),
+        circleColor:
+            AppConfiguration.theme.colorScheme.surfaceTint.toHexStringRGB(),
+        circleStrokeColor:
+            AppConfiguration.theme.colorScheme.primary.toHexStringRGB(),
         circleStrokeWidth: 2.0,
         circleRadius: 6.0,
         circleOpacity: 0.9,

@@ -1,8 +1,8 @@
-import 'package:Furka/pages/place_details_page.dart';
 import '/repositories/places_repository.dart';
 import 'package:flutter/material.dart';
 import '/models/place.dart';
 import '/views/place_list_item.dart';
+import 'place_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});

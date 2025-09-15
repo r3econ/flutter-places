@@ -12,6 +12,8 @@ class PlacesRepository {
       'Today, its varied routes attract both ambitious climbers and glacier trekkers, offering challenges on ice and rock alike. '
       'From its summit, the panoramic views sweep across the Furka Pass and into the vast expanses of the Bernese Alps. '
       'Its prominent position makes it a natural landmark for anyone traveling through the region, blending rugged alpine beauty with rich climbing tradition.'
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Galenstock.jpg/360px-Galenstock.jpg',
+      'Stan45 / Wikimedia Commons – Public Domain'
     ),
     Place(
       "Klein Furkahorn",

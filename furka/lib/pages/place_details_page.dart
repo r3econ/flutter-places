@@ -23,7 +23,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     return PlatformScaffold(
       appBar: PlatformAppBar(
         title: Text(widget.place.name),
@@ -32,7 +31,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
       ),
       body: Column(
         children: <Widget>[
-          // Place details (below map)
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -42,36 +40,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
                       double.infinity, // forces full width so textAlign works
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, // left align
-                    children: <Widget>[
-                      // Map (50% of screen height)
-                      SizedBox(
-                        height: screenHeight * 0.5,
-                        child: MapLibreMap(
-                          styleString: AppConfiguration.mapStyle,
-                          onMapCreated: _onMapCreated,
-                          dragEnabled: false,
-                          zoomGesturesEnabled: false,
-                          rotateGesturesEnabled: false,
-                          tiltGesturesEnabled: false,
-                          initialCameraPosition: _initialCameraPosition,
-                          onStyleLoadedCallback: _onStyleLoaded,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      Text(
-                        "Altitude: ${widget.place.altitudeDescription()}",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.start,
-                      ),
-
-                      const SizedBox(height: 12),
-                      Text(
-                        widget.place.description,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                    children: _buildScrollViewContent(context),
                   ),
                 ),
               ),
@@ -80,6 +49,40 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
         ],
       ),
     );
+  }
+
+  List<Widget> _buildScrollViewContent(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return [
+      SizedBox(
+        height: screenHeight * 0.5,
+        child: MapLibreMap(
+          styleString: AppConfiguration.mapStyle,
+          onMapCreated: _onMapCreated,
+          dragEnabled: false,
+          zoomGesturesEnabled: false,
+          rotateGesturesEnabled: false,
+          tiltGesturesEnabled: false,
+          initialCameraPosition: _initialCameraPosition,
+          onStyleLoadedCallback: _onStyleLoaded,
+        ),
+      ),
+
+      const SizedBox(height: 12),
+      Text(
+        "Altitude: ${widget.place.altitudeDescription()}",
+        style: Theme.of(context).textTheme.bodyMedium,
+        textAlign: TextAlign.start,
+      ),
+
+      const SizedBox(height: 12),
+      Text(
+        widget.place.description,
+        style: Theme.of(context).textTheme.bodyLarge,
+        textAlign: TextAlign.start,
+      ),
+    ];
   }
 
   void _onMapCreated(MapLibreMapController controller) {

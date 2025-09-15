@@ -26,7 +26,6 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.place.name),
         cupertino: (context, platform) =>
             CupertinoNavigationBarData(automaticBackgroundVisibility: false),

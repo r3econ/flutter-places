@@ -23,9 +23,9 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text('Map'),
         cupertino: (context, platform) =>
             CupertinoNavigationBarData(automaticBackgroundVisibility: false),
@@ -34,7 +34,9 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
         styleString: AppConfiguration.mapStyle,
         onMapCreated: _onMapCreated,
         initialCameraPosition: _initialCameraPosition(),
-        onStyleLoadedCallback: _onStyleLoaded,
+        onStyleLoadedCallback:() {
+          _onStyleLoaded(theme);
+        },
       ),
     );
   }
@@ -45,9 +47,9 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
     }
   }
 
-  Future<void> _onStyleLoaded() async {
+  Future<void> _onStyleLoaded(ThemeData theme) async {
     setState(() => _canInteractWithMap = true);
-    await _addAnnotations();
+    await _addAnnotations(theme);
     await _moveCameraToPlacesBounds();
   }
 
@@ -65,15 +67,15 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
     );
   }
 
-  Future<void> _addAnnotations() async {
+  Future<void> _addAnnotations(ThemeData theme) async {
     final controller = await _mapController.future;
     for (Place place in _repository.places) {
       final circle = await controller.addCircle(
         CircleOptions(
           geometry: LatLng(place.latitude, place.longitude),
-          circleColor: AppConfiguration.theme.colorScheme.surfaceTint
+          circleColor: theme.colorScheme.onPrimary
               .toHexStringRGB(),
-          circleStrokeColor: AppConfiguration.theme.colorScheme.primary
+          circleStrokeColor: theme.colorScheme.primary
               .toHexStringRGB(),
           circleStrokeWidth: 2.0,
           circleRadius: 5.0,

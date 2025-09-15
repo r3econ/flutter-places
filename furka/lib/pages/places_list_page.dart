@@ -18,7 +18,6 @@ class _PlacesListPageState extends State<PlacesListPage> {
   Widget build(BuildContext context) {
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text('Places'),
         cupertino: (context, platform) =>
             CupertinoNavigationBarData(automaticBackgroundVisibility: false),

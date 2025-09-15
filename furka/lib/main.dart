@@ -11,23 +11,17 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-final materialTheme = AppConfiguration.theme; 
-final cupertinoTheme = MaterialBasedCupertinoThemeData(materialTheme: materialTheme);
-return PlatformProvider( 
-  builder: (context) => PlatformTheme(
-    materialLightTheme: materialTheme,
-    cupertinoLightTheme: cupertinoTheme,
-    builder: (context) => PlatformApp(
-      title: AppConfiguration.appName,
-      home: MainTabBar(),
-    ),
-  ),
-);
-    // return MaterialApp(
-    //   title: AppConfiguration.appName,
-    //   theme: AppConfiguration.theme,
-    //   home: MainTabBar(),
-    // );
+    return PlatformProvider(
+      builder: (context) => PlatformTheme(
+        themeMode: ThemeMode.system,
+        materialLightTheme: AppConfiguration.lightMaterialTheme,
+        materialDarkTheme: AppConfiguration.darkMaterialTheme,
+        cupertinoLightTheme: AppConfiguration.lightCupertinoTheme,
+        cupertinoDarkTheme: AppConfiguration.darkCupertinoTheme,
+        builder: (context) =>
+            PlatformApp(title: AppConfiguration.appName, home: MainTabBar()),
+      ),
+    );
   }
 }
 
@@ -45,15 +39,11 @@ class _MainTabBarState extends State<MainTabBar> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return PlatformScaffold(
-      body: [
-        PlacesListPage(),
-        PlacesMapPage(),
-      ][_selectedPageIndex],
+      body: [PlacesListPage(), PlacesMapPage()][_selectedPageIndex],
       bottomNavBar: PlatformNavBar(
         currentIndex: _selectedPageIndex,
         cupertino: (context, platform) => CupertinoTabBarData(
           iconSize: 24,
-          backgroundColor: theme.colorScheme.primary,
           activeColor: theme.colorScheme.inverseSurface,
         ),
         itemChanged: (index) => setState(() {

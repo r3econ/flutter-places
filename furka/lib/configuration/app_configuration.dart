@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class AppConfiguration {
-  static final String appName = "Furka";
-  static final ThemeData theme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(255, 255, 255, 255),
-      primary: const Color.fromARGB(255, 255, 255, 255),
-      surfaceTint: const Color(0xFF5AC8FA),
-    ),
-  );
-    // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
+  static final String appName = "Places";
+  // Style source: https://api3.geo.admin.ch/services/sdiservices.html#getstyle
   static final String mapStyle =
       "https://vectortiles.geo.admin.ch/styles/ch.swisstopo.basemap.vt/style.json";
+  static final lightMaterialTheme = ThemeData.light();
+  static final darkMaterialTheme = ThemeData.dark();
+  static final lightCupertinoTheme = CupertinoThemeData(
+    brightness: Brightness.light,
+  );
+  static final darkCupertinoTheme = CupertinoThemeData(
+    brightness: Brightness.dark,
+  );
 }

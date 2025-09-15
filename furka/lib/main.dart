@@ -56,8 +56,8 @@ class _MainTabBarState extends State<MainTabBar> {
             label: 'Places',
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(context.platformIcons.locationSolid),
-            icon: Icon(context.platformIcons.location),
+            activeIcon: Icon(context.platformIcons.favoriteSolid),
+            icon: Icon(context.platformIcons.favoriteOutline),
             label: 'Map',
           ),
         ],

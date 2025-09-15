@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '/models/place.dart';
 import '/views/place_list_item.dart';
 import 'place_details_page.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class PlacesListPage extends StatefulWidget {
   const PlacesListPage({super.key, required this.title});
@@ -34,7 +35,7 @@ class _PlacesListPageState extends State<PlacesListPage> {
               place.name,
               place.altitudeDescription(),
             );
-            return ListTile(
+            return PlatformListTile(
               title: item.buildTitle(context),
               subtitle: item.buildSubtitle(context),
               trailing: Icon(Icons.chevron_right_rounded),

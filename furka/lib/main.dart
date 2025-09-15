@@ -41,6 +41,7 @@ class _MainTabBarState extends State<MainTabBar> {
       bottomNavBar: PlatformNavBar(
         currentIndex: _selectedPageIndex,
         cupertino: (context, platform) => CupertinoTabBarData(
+          iconSize: 24,
           backgroundColor: theme.colorScheme.primary,
           activeColor: theme.colorScheme.inverseSurface,
         ),
@@ -49,10 +50,15 @@ class _MainTabBarState extends State<MainTabBar> {
         }),
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_outlined),
+            activeIcon: Icon(context.platformIcons.collectionsSolid),
+            icon: Icon(context.platformIcons.collections),
             label: 'Places',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.map_outlined), label: 'Map'),
+          BottomNavigationBarItem(
+            activeIcon: Icon(context.platformIcons.locationSolid),
+            icon: Icon(context.platformIcons.location),
+            label: 'Map',
+          ),
         ],
       ),
       iosContentPadding: false,

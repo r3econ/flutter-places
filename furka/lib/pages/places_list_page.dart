@@ -38,7 +38,7 @@ class _PlacesListPageState extends State<PlacesListPage> {
             return PlatformListTile(
               title: item.buildTitle(context),
               subtitle: item.buildSubtitle(context),
-              trailing: Icon(Icons.chevron_right_rounded),
+              trailing: Icon(context.platformIcons.rightChevron),
               onTap: () => _navigateToPlaceDetails(context, place),
             );
           },

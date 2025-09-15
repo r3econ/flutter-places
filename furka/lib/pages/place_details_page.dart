@@ -53,8 +53,7 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
 
   List<Widget> _buildScrollViewContent(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-
-    return [
+    List<Widget> items = [
       SizedBox(
         height: screenHeight * 0.5,
         child: MapLibreMap(
@@ -83,6 +82,29 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
         textAlign: TextAlign.start,
       ),
     ];
+
+    if (widget.place.imageUrl != null) {
+      items.addAll([
+        FadeInImage.assetNetwork(
+          placeholder: 'assets/images/placeholder.png',
+          image: widget.place.imageUrl!,
+          height: 300,
+          width: 400,
+        ),
+      ]);
+    }
+
+    if (widget.place.imageNote != null) {
+      items.addAll([
+        Text(
+          widget.place.imageNote!,
+          style: Theme.of(context).textTheme.bodySmall,
+          textAlign: TextAlign.start,
+        ),
+      ]);
+    }
+
+    return items;
   }
 
   void _onMapCreated(MapLibreMapController controller) {

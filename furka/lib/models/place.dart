@@ -7,6 +7,6 @@ class Place {
   String? imageUrl;
   String? imageNote;
 
-  Place(this.name, this.latitude, this.longitude, this.altitude, this.description, [this.imageUrl, this.imageNote]);
+  Place(this.name, this.latitude, this.longitude, this.altitude, this.description, this.imageUrl, this.imageNote);
   String altitudeDescription() => '$altitude m';
 }

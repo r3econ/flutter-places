@@ -6,9 +6,7 @@ import 'place_details_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class PlacesListPage extends StatefulWidget {
-  const PlacesListPage({super.key, required this.title});
-  final String title;
-
+  const PlacesListPage({super.key});
   @override
   State<PlacesListPage> createState() => _PlacesListPageState();
 }
@@ -18,13 +16,12 @@ class _PlacesListPageState extends State<PlacesListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          widget.title,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text('Places'),
+        cupertino: (context, platform) =>
+            CupertinoNavigationBarData(automaticBackgroundVisibility: false),
       ),
       body: Center(
         child: ListView.separated(

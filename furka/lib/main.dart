@@ -11,11 +11,23 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+final materialTheme = AppConfiguration.theme; 
+final cupertinoTheme = MaterialBasedCupertinoThemeData(materialTheme: materialTheme);
+return PlatformProvider( 
+  builder: (context) => PlatformTheme(
+    materialLightTheme: materialTheme,
+    cupertinoLightTheme: cupertinoTheme,
+    builder: (context) => PlatformApp(
       title: AppConfiguration.appName,
-      theme: AppConfiguration.theme,
       home: MainTabBar(),
-    );
+    ),
+  ),
+);
+    // return MaterialApp(
+    //   title: AppConfiguration.appName,
+    //   theme: AppConfiguration.theme,
+    //   home: MainTabBar(),
+    // );
   }
 }
 
@@ -34,8 +46,7 @@ class _MainTabBarState extends State<MainTabBar> {
     final ThemeData theme = Theme.of(context);
     return PlatformScaffold(
       body: [
-        /// Home page
-        PlacesListPage(title: AppConfiguration.appName),
+        PlacesListPage(),
         PlacesMapPage(),
       ][_selectedPageIndex],
       bottomNavBar: PlatformNavBar(

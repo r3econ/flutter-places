@@ -3,6 +3,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 import '/models/place.dart';
 import 'dart:async';
 import '/configuration/app_configuration.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class PlaceDetailsPage extends StatefulWidget {
   const PlaceDetailsPage({super.key, required this.place});
@@ -23,13 +24,12 @@ class _PlaceDetailsPageState extends State<PlaceDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          widget.place.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text(widget.place.name),
+        cupertino: (context, platform) =>
+            CupertinoNavigationBarData(automaticBackgroundVisibility: false),
       ),
       body: Column(
         children: <Widget>[

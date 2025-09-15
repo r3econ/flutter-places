@@ -5,6 +5,7 @@ import 'dart:async';
 import '/configuration/app_configuration.dart';
 import '/repositories/places_repository.dart';
 import 'place_details_page.dart'; // Make sure you have this page
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class PlacesMapPage extends StatefulWidget {
   const PlacesMapPage({super.key});
@@ -22,20 +23,13 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Map', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Map'),
+        cupertino: (context, platform) =>
+            CupertinoNavigationBarData(automaticBackgroundVisibility: false),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: _canInteractWithMap
-          ? FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: _moveCameraToPlacesBounds,
-              mini: true,
-              child: const Icon(Icons.zoom_out_map),
-            )
-          : null,
       body: MapLibreMap(
         styleString: AppConfiguration.mapStyle,
         onMapCreated: _onMapCreated,

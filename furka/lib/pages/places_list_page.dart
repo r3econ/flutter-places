@@ -1,7 +1,6 @@
 import '/repositories/places_repository.dart';
 import 'package:flutter/material.dart';
 import '/models/place.dart';
-import '/views/place_list_item.dart';
 import 'place_details_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -27,13 +26,9 @@ class _PlacesListPageState extends State<PlacesListPage> {
           itemCount: repository.places.length,
           itemBuilder: (context, index) {
             Place place = repository.places[index];
-            PlaceListItem item = PlaceListItem(
-              place.name,
-              place.altitudeDescription(),
-            );
             return PlatformListTile(
-              title: item.buildTitle(context),
-              subtitle: item.buildSubtitle(context),
+              title: Text(place.name),
+              subtitle: Text(place.altitudeDescription()),
               trailing: Icon(context.platformIcons.rightChevron),
               onTap: () => _navigateToPlaceDetails(context, place),
             );

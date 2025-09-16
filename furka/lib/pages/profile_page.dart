@@ -5,7 +5,6 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart' as auth_ui;
 import '/repositories/places_repository.dart';
 import '/models/place.dart';
 import 'place_details_page.dart';
-import '/views/place_list_item.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -119,10 +118,9 @@ class _ProfilePageState extends State<ProfilePage> {
       itemCount: repository.places.length,
       itemBuilder: (context, index) {
         final place = repository.places[index];
-        final item = PlaceListItem(place.name, place.altitudeDescription());
         return PlatformListTile(
-          title: item.buildTitle(context),
-          subtitle: item.buildSubtitle(context),
+          title: Text(place.name),
+          subtitle: Text(place.altitudeDescription()),
           trailing: Icon(context.platformIcons.rightChevron),
           onTap: () => _navigateToPlaceDetails(context, place),
         );

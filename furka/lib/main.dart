@@ -4,8 +4,17 @@ import 'configuration/app_configuration.dart';
 import 'pages/places_list_page.dart';
 import 'pages/profile_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() => runApp(const App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});

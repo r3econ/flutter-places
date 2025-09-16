@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '255034545471',
     projectId: 'flutter-places-2398',
     storageBucket: 'flutter-places-2398.firebasestorage.app',
-    iosBundleId: 'com.example.flutterNews',
+    iosBundleId: 'com.example.flutterPlaces',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +75,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '255034545471',
     projectId: 'flutter-places-2398',
     storageBucket: 'flutter-places-2398.firebasestorage.app',
-    iosBundleId: 'com.example.flutterNews',
+    iosBundleId: 'com.example.flutterPlaces',
   );
 }

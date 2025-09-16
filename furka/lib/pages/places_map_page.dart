@@ -18,7 +18,6 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   final PlacesRepository _repository = PlacesRepository();
   final Completer<MapLibreMapController> _mapController =
       Completer<MapLibreMapController>();
-  bool _canInteractWithMap = false;
   final Map<String, Place> _circleIdToPlace = {};
 
   @override
@@ -48,7 +47,6 @@ class _PlacesMapPageState extends State<PlacesMapPage> {
   }
 
   Future<void> _onStyleLoaded(ThemeData theme) async {
-    setState(() => _canInteractWithMap = true);
     await _addAnnotations(theme);
     await _moveCameraToPlacesBounds();
   }

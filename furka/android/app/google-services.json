@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255034545471",
+    "project_id": "flutter-places-2398",
+    "storage_bucket": "flutter-places-2398.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255034545471:android:db31ac50d5f7cfca766f8a",
+        "android_client_info": {
+          "package_name": "com.example.furka"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX9Pv1yp6L6QqCLt-n1Ex-t34BPfsJOdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

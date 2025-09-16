@@ -42,33 +42,42 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildLoggedOutStateUI() {
-    return Center(
-      child: PlatformElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => PlatformScaffold(
-                appBar: PlatformAppBar(),
-                body: auth_ui.SignInScreen(
-                  providers: [auth_ui.EmailAuthProvider()],
-                  actions: [
-                    auth_ui.AuthStateChangeAction<auth_ui.SignedIn>((
-                      context,
-                      state,
-                    ) {
-                      Navigator.of(context).pop();
-                    }),
-                  ],
+Widget _buildLoggedOutStateUI() {
+  return Center(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0), // side padding
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Please log in to view your profile and favorite places.',
+            textAlign: TextAlign.center),
+          const SizedBox(height: 16),
+          PlatformElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => PlatformScaffold(
+                    appBar: PlatformAppBar(),
+                    body: auth_ui.SignInScreen(
+                      providers: [auth_ui.EmailAuthProvider()],
+                      actions: [
+                        auth_ui.AuthStateChangeAction<auth_ui.SignedIn>((context, state) {
+                          Navigator.of(context).pop();
+                        }),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        },
-        child: const Text('Login'),
+              );
+            },
+            child: const Text('Login'),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildLoggedInStateUI() {
     final email = FirebaseAuth.instance.currentUser?.email ?? 'Anonymous';

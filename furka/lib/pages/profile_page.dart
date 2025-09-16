@@ -72,31 +72,38 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildLoggedInStateUI() {
-    final user = FirebaseAuth.instance.currentUser;
+    final email = FirebaseAuth.instance.currentUser?.email ?? 'Anonymous';
 
-    return Center(
-      child: PlatformTextButton(
-        onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-        },
-        child: Text('Log out (${user?.email})'),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(email, style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 12),
+              PlatformElevatedButton(
+                child: const Text('Logout'),
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                },
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Favorite Places',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 400, // or dynamic height
+                child: _buildFavoritePlacesList(),
+              ),
+            ],
+          ),
+        ),
       ),
     );
-
-    // TODO: show profile info + logout + places
-    // return Column(
-    //   children: [
-    //     Text(user.email ?? 'Anonymous'),
-    //     PlatformElevatedButton(
-    //       child: const Text('Logout'),
-    //       onPressed: () async {
-    //         await FirebaseAuth.instance.signOut();
-    //       },
-    //     ),
-    //     const Divider(),
-    //     // Expanded(child: _buildFavoritePlacesList()),
-    //   ],
-    // );
   }
 
   Widget _buildFavoritePlacesList() {

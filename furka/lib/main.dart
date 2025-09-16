@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furka/pages/places_map_page.dart';
 import 'configuration/app_configuration.dart';
 import 'pages/places_list_page.dart';
+import 'pages/profile_page.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 void main() => runApp(const App());
@@ -39,7 +40,7 @@ class _MainTabBarState extends State<MainTabBar> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return PlatformScaffold(
-      body: [PlacesListPage(), PlacesMapPage()][_selectedPageIndex],
+      body: [PlacesListPage(), PlacesMapPage(), ProfilePage()][_selectedPageIndex],
       bottomNavBar: PlatformNavBar(
         currentIndex: _selectedPageIndex,
         cupertino: (context, platform) => CupertinoTabBarData(
@@ -58,6 +59,11 @@ class _MainTabBarState extends State<MainTabBar> {
           BottomNavigationBarItem(
             activeIcon: Icon(context.platformIcons.favoriteSolid),
             icon: Icon(context.platformIcons.favoriteOutline),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            activeIcon: Icon(context.platformIcons.personSolid),
+            icon: Icon(context.platformIcons.person),
             label: 'Map',
           ),
         ],

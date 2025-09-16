@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart' as auth_ui;
 import '/repositories/places_repository.dart';
 import '/models/place.dart';
 import 'place_details_page.dart';
@@ -12,22 +14,76 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  PlacesRepository repository = PlacesRepository();
+  final PlacesRepository repository = PlacesRepository();
 
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
       appBar: PlatformAppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         cupertino: (context, platform) =>
             CupertinoNavigationBarData(automaticBackgroundVisibility: false),
       ),
-      body: Center(
-        child: Text(  
-          'User Profile Page\n\nThis is a placeholder for user profile information.',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
-        ),
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          final user = snapshot.data;
+
+          if (user == null) {
+            return Center(
+              child: PlatformElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PlatformScaffold(
+                        appBar: PlatformAppBar(),
+                        body: auth_ui.SignInScreen(
+                          providers: [auth_ui.EmailAuthProvider()],
+                          actions: [
+                            auth_ui.AuthStateChangeAction<auth_ui.SignedIn>((
+                              context,
+                              state,
+                            ) {
+                              Navigator.of(
+                                context,
+                              ).pop(); // ✅ close after login
+                            }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Login'),
+              ),
+            );
+          } else {
+            final email = user.email ?? 'Anonymous';
+            return Center(
+              child: PlatformTextButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                },
+                child: Text('Log out ($email)'),
+              ),
+            );
+          }
+
+          // ✅ Logged in → show profile info + logout + places
+          // return Column(
+          //   children: [
+          //     Text(user.email ?? 'Anonymous'),
+          //     PlatformElevatedButton(
+          //       child: const Text('Logout'),
+          //       onPressed: () async {
+          //         await FirebaseAuth.instance.signOut();
+          //       },
+          //     ),
+          //     const Divider(),
+          //     // Expanded(child: _buildFavoritePlacesList()),
+          //   ],
+          // );
+        },
       ),
     );
   }
@@ -40,23 +96,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildFavoritePlacesList() {
     return ListView.separated(
-          itemCount: repository.places.length,
-          itemBuilder: (context, index) {
-            Place place = repository.places[index];
-            PlaceListItem item = PlaceListItem(
-              place.name,
-              place.altitudeDescription(),
-            );
-            return PlatformListTile(
-              title: item.buildTitle(context),
-              subtitle: item.buildSubtitle(context),
-              trailing: Icon(context.platformIcons.rightChevron),
-              onTap: () => _navigateToPlaceDetails(context, place),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider();
-          },
+      itemCount: repository.places.length,
+      itemBuilder: (context, index) {
+        final place = repository.places[index];
+        final item = PlaceListItem(place.name, place.altitudeDescription());
+        return PlatformListTile(
+          title: item.buildTitle(context),
+          subtitle: item.buildSubtitle(context),
+          trailing: Icon(context.platformIcons.rightChevron),
+          onTap: () => _navigateToPlaceDetails(context, place),
         );
+      },
+      separatorBuilder: (context, index) => const Divider(),
+    );
   }
 }

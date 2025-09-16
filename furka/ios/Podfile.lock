@@ -1,29 +1,123 @@
 PODS:
+  - app_links (6.4.1):
+    - Flutter
+  - desktop_webview_auth (0.0.1):
+    - Flutter
+  - Firebase/Auth (12.2.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 12.2.0)
+  - Firebase/CoreOnly (12.2.0):
+    - FirebaseCore (~> 12.2.0)
+  - firebase_auth (6.0.2):
+    - Firebase/Auth (= 12.2.0)
+    - firebase_core
+    - Flutter
+  - firebase_core (4.1.0):
+    - Firebase/CoreOnly (= 12.2.0)
+    - Flutter
+  - FirebaseAppCheckInterop (12.2.0)
+  - FirebaseAuth (12.2.0):
+    - FirebaseAppCheckInterop (~> 12.2.0)
+    - FirebaseAuthInterop (~> 12.2.0)
+    - FirebaseCore (~> 12.2.0)
+    - FirebaseCoreExtension (~> 12.2.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GTMSessionFetcher/Core (< 6.0, >= 3.4)
+    - RecaptchaInterop (~> 101.0)
+  - FirebaseAuthInterop (12.2.0)
+  - FirebaseCore (12.2.0):
+    - FirebaseCoreInternal (~> 12.2.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Logger (~> 8.1)
+  - FirebaseCoreExtension (12.2.0):
+    - FirebaseCore (~> 12.2.0)
+  - FirebaseCoreInternal (12.2.0):
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
   - Flutter (1.0.0)
+  - GoogleUtilities/AppDelegateSwizzler (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Environment (8.1.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Logger (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (8.1.0):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (8.1.0)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (8.1.0)
+  - GoogleUtilities/Reachability (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GTMSessionFetcher/Core (4.5.0)
   - MapLibre (6.14.0)
   - maplibre_gl (0.0.1):
     - Flutter
     - MapLibre (= 6.14.0)
+  - RecaptchaInterop (101.0.0)
 
 DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
+  - desktop_webview_auth (from `.symlinks/plugins/desktop_webview_auth/ios`)
+  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
+  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
   - maplibre_gl (from `.symlinks/plugins/maplibre_gl/ios`)
 
 SPEC REPOS:
   trunk:
+    - Firebase
+    - FirebaseAppCheckInterop
+    - FirebaseAuth
+    - FirebaseAuthInterop
+    - FirebaseCore
+    - FirebaseCoreExtension
+    - FirebaseCoreInternal
+    - GoogleUtilities
+    - GTMSessionFetcher
     - MapLibre
+    - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
+  desktop_webview_auth:
+    :path: ".symlinks/plugins/desktop_webview_auth/ios"
+  firebase_auth:
+    :path: ".symlinks/plugins/firebase_auth/ios"
+  firebase_core:
+    :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
   maplibre_gl:
     :path: ".symlinks/plugins/maplibre_gl/ios"
 
 SPEC CHECKSUMS:
+  app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
+  desktop_webview_auth: 4cf620136c3d79796496eef85e59508e3a1a003d
+  Firebase: 26f6f8d460603af3df970ad505b16b15f5e2e9a1
+  firebase_auth: 9c0ce237c3bdc34c85fec8b87575beda143adba0
+  firebase_core: 3ff52146406557dddd01d570e807e203ec7e1302
+  FirebaseAppCheckInterop: a1b2598c64c5a8c42fd6f6a1c3d0938ae4324678
+  FirebaseAuth: 059c11702bdb759bb49b6c7ec6ff67abf21f39c4
+  FirebaseAuthInterop: 217702acd4cc6baa98ba9d6c054532e0de0b8a16
+  FirebaseCore: 311c48a147ad4a0ab7febbaed89e8025c67510cd
+  FirebaseCoreExtension: 73af080c22a2f7b44cefa391dc08f7e4ee162cb5
+  FirebaseCoreInternal: 56ea29f3dad2894f81b060f706f9d53509b6ed3b
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  GTMSessionFetcher: fc75fc972958dceedee61cb662ae1da7a83a91cf
   MapLibre: 69e572367f4ef6287e18246cfafc39c80cdcabcd
   maplibre_gl: 3c924e44725147b03dda33430ad216005b40555f
+  RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
 
-PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
+PODFILE CHECKSUM: ba0d7af98d1a0db7cbf744edd0331fd4de934cd6
 
 COCOAPODS: 1.16.2

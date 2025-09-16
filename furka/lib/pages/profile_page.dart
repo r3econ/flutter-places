@@ -74,58 +74,52 @@ class _ProfilePageState extends State<ProfilePage> {
     final email = FirebaseAuth.instance.currentUser?.email ?? 'Anonymous';
 
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Logged in as',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(email, style: Theme.of(context).textTheme.bodyLarge),
-                  PlatformTextButton(
-                    child: const Text('Logout'),
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                  ),
-                ],
-              ),
-              Divider(),
-              Text(
-                'Favorite Places',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 400, // or dynamic height
-                child: _buildFavoritePlacesList(),
-              ),
-            ],
+      child: CustomScrollView(
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(
+                  'Logged in as',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(email, style: Theme.of(context).textTheme.bodyLarge),
+                    PlatformTextButton(
+                      child: const Text('Logout'),
+                      onPressed: () async =>
+                          await FirebaseAuth.instance.signOut(),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Text(
+                  'Favorite Places',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ]),
+            ),
           ),
-        ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final place = repository.places[index];
+              return PlatformListTile(
+                title: Text(place.name),
+                subtitle: Text(place.altitudeDescription()),
+                trailing: Icon(context.platformIcons.rightChevron),
+                onTap: () => _navigateToPlaceDetails(context, place),
+              );
+            }, childCount: repository.places.length),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildFavoritePlacesList() {
-    return ListView.separated(
-      itemCount: repository.places.length,
-      itemBuilder: (context, index) {
-        final place = repository.places[index];
-        return PlatformListTile(
-          title: Text(place.name),
-          subtitle: Text(place.altitudeDescription()),
-          trailing: Icon(context.platformIcons.rightChevron),
-          onTap: () => _navigateToPlaceDetails(context, place),
-        );
-      },
-      separatorBuilder: (context, index) => const Divider(),
     );
   }
 }

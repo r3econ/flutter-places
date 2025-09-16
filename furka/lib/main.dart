@@ -40,7 +40,11 @@ class _MainTabBarState extends State<MainTabBar> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return PlatformScaffold(
-      body: [PlacesListPage(), PlacesMapPage(), ProfilePage()][_selectedPageIndex],
+      body: [
+        PlacesListPage(),
+        PlacesMapPage(),
+        ProfilePage(),
+      ][_selectedPageIndex],
       bottomNavBar: PlatformNavBar(
         currentIndex: _selectedPageIndex,
         cupertino: (context, platform) => CupertinoTabBarData(
@@ -50,26 +54,30 @@ class _MainTabBarState extends State<MainTabBar> {
         itemChanged: (index) => setState(() {
           _selectedPageIndex = index;
         }),
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: Icon(context.platformIcons.collectionsSolid),
-            icon: Icon(context.platformIcons.collections),
-            label: 'Places',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Icon(context.platformIcons.favoriteSolid),
-            icon: Icon(context.platformIcons.favoriteOutline),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Icon(context.platformIcons.personSolid),
-            icon: Icon(context.platformIcons.person),
-            label: 'Map',
-          ),
-        ],
+        items: _buildBottomNavBarItems(),
       ),
       iosContentPadding: false,
       iosContentBottomPadding: false,
     );
+  }
+
+  List<BottomNavigationBarItem> _buildBottomNavBarItems() {
+    return [
+      BottomNavigationBarItem(
+        activeIcon: Icon(context.platformIcons.collectionsSolid),
+        icon: Icon(context.platformIcons.collections),
+        label: 'Places',
+      ),
+      BottomNavigationBarItem(
+        activeIcon: Icon(context.platformIcons.favoriteSolid),
+        icon: Icon(context.platformIcons.favoriteOutline),
+        label: 'Map',
+      ),
+      BottomNavigationBarItem(
+        activeIcon: Icon(context.platformIcons.personSolid),
+        icon: Icon(context.platformIcons.person),
+        label: 'Profile',
+      ),
+    ];
   }
 }

@@ -81,15 +81,23 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(email, style: const TextStyle(fontSize: 18)),
-              const SizedBox(height: 12),
-              PlatformElevatedButton(
-                child: const Text('Logout'),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                },
+              Text(
+                'Logged in as',
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(email, style: Theme.of(context).textTheme.bodyLarge),
+                  PlatformTextButton(
+                    child: const Text('Logout'),
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    },
+                  ),
+                ],
+              ),
+              Divider(),
               Text(
                 'Favorite Places',
                 style: Theme.of(context).textTheme.titleMedium,

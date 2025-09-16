@@ -27,62 +27,11 @@ class _ProfilePageState extends State<ProfilePage> {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          final user = snapshot.data;
-
-          if (user == null) {
-            return Center(
-              child: PlatformElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PlatformScaffold(
-                        appBar: PlatformAppBar(),
-                        body: auth_ui.SignInScreen(
-                          providers: [auth_ui.EmailAuthProvider()],
-                          actions: [
-                            auth_ui.AuthStateChangeAction<auth_ui.SignedIn>((
-                              context,
-                              state,
-                            ) {
-                              Navigator.of(
-                                context,
-                              ).pop(); // ✅ close after login
-                            }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: const Text('Login'),
-              ),
-            );
+          if (FirebaseAuth.instance.currentUser == null) {
+            return _buildLoggedOutStateUI();
           } else {
-            final email = user.email ?? 'Anonymous';
-            return Center(
-              child: PlatformTextButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                },
-                child: Text('Log out ($email)'),
-              ),
-            );
+            return _buildLoggedInStateUI();
           }
-
-          // ✅ Logged in → show profile info + logout + places
-          // return Column(
-          //   children: [
-          //     Text(user.email ?? 'Anonymous'),
-          //     PlatformElevatedButton(
-          //       child: const Text('Logout'),
-          //       onPressed: () async {
-          //         await FirebaseAuth.instance.signOut();
-          //       },
-          //     ),
-          //     const Divider(),
-          //     // Expanded(child: _buildFavoritePlacesList()),
-          //   ],
-          // );
         },
       ),
     );
@@ -92,6 +41,62 @@ class _ProfilePageState extends State<ProfilePage> {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => PlaceDetailsPage(place: place)),
     );
+  }
+
+  Widget _buildLoggedOutStateUI() {
+    return Center(
+      child: PlatformElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => PlatformScaffold(
+                appBar: PlatformAppBar(),
+                body: auth_ui.SignInScreen(
+                  providers: [auth_ui.EmailAuthProvider()],
+                  actions: [
+                    auth_ui.AuthStateChangeAction<auth_ui.SignedIn>((
+                      context,
+                      state,
+                    ) {
+                      Navigator.of(context).pop();
+                    }),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        child: const Text('Login'),
+      ),
+    );
+  }
+
+  Widget _buildLoggedInStateUI() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    return Center(
+      child: PlatformTextButton(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+        },
+        child: Text('Log out (${user?.email})'),
+      ),
+    );
+
+    // TODO: show profile info + logout + places
+    // return Column(
+    //   children: [
+    //     Text(user.email ?? 'Anonymous'),
+    //     PlatformElevatedButton(
+    //       child: const Text('Logout'),
+    //       onPressed: () async {
+    //         await FirebaseAuth.instance.signOut();
+    //       },
+    //     ),
+    //     const Divider(),
+    //     // Expanded(child: _buildFavoritePlacesList()),
+    //   ],
+    // );
   }
 
   Widget _buildFavoritePlacesList() {

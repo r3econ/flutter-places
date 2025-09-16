@@ -12,7 +12,12 @@
           "package_name": "com.example.furka"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "255034545471-dtifbo8vc704mj026b348tu1506ogflj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAX9Pv1yp6L6QqCLt-n1Ex-t34BPfsJOdY"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255034545471-dtifbo8vc704mj026b348tu1506ogflj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255034545471-m113i62qcuei20laspq7uc0ngjm85e1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterNews"
+              }
+            }
+          ]
         }
       }
     }

@@ -7,13 +7,12 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+
 Future<void> main() async {
-WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  FirebaseUIAuth.configureProviders([
-    EmailAuthProvider(),
-  ]);
+  FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
   runApp(const App());
 }
